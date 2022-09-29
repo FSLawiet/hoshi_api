@@ -1,7 +1,7 @@
 {
   "name": "hoshi_api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API do site e-commerce Hoshi",
   "main": "./src/index.js",
   "scripts": {
     "test": "jest --env node",
@@ -12,7 +12,12 @@
     "type": "git",
     "url": "git+https://github.com/FSLawiet/hoshi_api.git"
   },
-  "keywords": [],
+  "keywords": [
+    "api",
+    "backend",
+    "ecommerce",
+    "hoshi"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
