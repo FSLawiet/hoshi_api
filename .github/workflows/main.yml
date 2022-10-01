@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 env: 
-  DB_CONN_STRING: postgres://postegresql_user:5qAyjOua9On2iVIFotmsQYwYeIXTuC7y@dpg-ccrifqirrk08u0m08k60-a.oregon-postgres.render.com/postegresql?ssl=true
+  DB_CONN_STRING: ${{secrets.DB_CONN_STRING}}
 jobs:
   build:
     runs-on: ubuntu-latest
