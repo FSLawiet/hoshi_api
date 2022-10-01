@@ -13,30 +13,29 @@ module.exports = (server) => {
       } else res.json(await produtoService.getProdutos());
     })
     .post(async (req, res) => {
-      const { descricao, preco, tipo_produto, provedor_id } = req.body;
+      const { peca, valor, qt_estoque } = req.body;
       try {
         const resp = await produtoService.insertProduto({
-          descricao,
-          preco,
-          tipo_produto,
-          provedor_id,
+          peca,
+          valor,
+          qt_estoque,
         });
         res.status(201).json({
-          data: `Cadastro de id ${resp[0].id} efetuado com sucesso!!!`,
-          id: resp[0].id,
+          data: `Cadastro de id ${resp[0].id_produto} efetuado com sucesso!!!`,
+          id: resp[0].id_produto,
         });
       } catch (error) {
+        console.log(error.message);
         res.status(422).send(error.message);
       }
     })
     .put(async (req, res) => {
-      const { id, descricao, preco, tipo_produto, provedor_id } = req.body;
+      const { id, peca, valor, qt_estoque } = req.body;
       res.json(
         await produtoService.updateProduto(id, {
-          descricao,
-          preco,
-          tipo_produto,
-          provedor_id,
+          peca,
+          valor,
+          qt_estoque,
         })
       );
     })
