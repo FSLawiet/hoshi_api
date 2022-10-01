@@ -10,7 +10,13 @@ module.exports = (server) => {
         } catch (error) {
           res.status(404).send(error.message);
         }
-      } else res.json(await cupomService.getCupons());
+      } else {
+        try {
+          res.json(await cupomService.getCupons());
+        } catch (error) {
+          res.status(404).send(error.message);
+        }
+      }
     })
     .post(async (req, res) => {
       const { codigo, desconto, validade } = req.body;

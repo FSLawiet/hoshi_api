@@ -10,7 +10,13 @@ module.exports = (server) => {
         } catch (error) {
           res.status(404).send(error.message);
         }
-      } else res.json(await produtoService.getProdutos());
+      } else {
+        try {
+          res.json(await produtoService.getProdutos());
+        } catch (error) {
+          res.status(404).send(error.message);
+        }
+      }
     })
     .post(async (req, res) => {
       const { peca, valor, qt_estoque } = req.body;
