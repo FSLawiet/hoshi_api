@@ -1,11 +1,7 @@
 const pgp = require("pg-promise")();
 const bancoDeDados = pgp({
-  user: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_DATABASE,
-  ssl: true,
+  connectionString: process.env.DB_CONN_STRING,
+  max: 30,
 });
 
 module.exports = bancoDeDados;
