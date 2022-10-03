@@ -1,13 +1,13 @@
 const database = require("../infra/connection");
 
-exports.getCupons = () => database.query("SELECT * FROM cupom");
-exports.getCuponsById = (id) =>
-  database.query(`SELECT * FROM cupom WHERE id = '${id}';`);
-exports.insertCupom = (cupom) =>
-  database.query(
+exports.getCupons = async () => await database.query("SELECT * FROM cupom");
+exports.getCuponsById = async (id) =>
+  await database.query(`SELECT * FROM cupom WHERE id = '${id}';`);
+exports.insertCupom = async (cupom) =>
+  await database.query(
     ` SET datestyle = dmy; INSERT INTO Cupom (codigo, desconto, validade) VALUES ('${cupom.codigo}', ${cupom.desconto}, '${cupom.validade}') RETURNING id;`
   );
-exports.updateCupom = (id, cupom) => {
+exports.updateCupom = async (id, cupom) => {
   let valores = Object.values(cupom);
   let valueChange = "";
   if (valores.length > 1) {
@@ -26,10 +26,10 @@ exports.updateCupom = (id, cupom) => {
     else if (cupom.desconto) valueChange += "desconto = " + cupom.desconto;
     else if (cupom.validade) valueChange += "validade = " + cupom.validade;
   }
-  database.query(
+  await database.query(
     `UPDATE Cupom SET ${valueChange} WHERE id = ${id} RETURNING id;`
   );
 };
-exports.deleteCupom = (id) => {
-  database.query(`DELETE FROM Cupom WHERE id = ${id};`);
+exports.deleteCupom = async (id) => {
+  await database.query(`DELETE FROM Cupom WHERE id = ${id};`);
 };

@@ -1,31 +1,32 @@
-const produtoService = require("../services/produtosService");
+const usuarioService = require("../services/usuarioService");
 
 module.exports = (server) => {
   server
-    .route("/produtos")
+    .route("/users")
     .get(async (req, res) => {
       if (req.query.id) {
         try {
-          res.json(await produtoService.getProdutosById(req.query.id));
+          res.json(await usuarioService.getUsuariosById(req.query.id));
         } catch (error) {
           res.status(404).send(error.message);
         }
       } else {
         try {
-          res.json(await produtoService.getProdutos());
+          res.json(await usuarioService.getUsuarios());
         } catch (error) {
           res.status(404).send(error.message);
         }
       }
     })
     .post(async (req, res) => {
-      const { peca, img, valor, qt_estoque } = req.body;
+      const { nome, username, senha, email, telefone } = req.body;
       try {
-        const resp = await produtoService.insertProduto({
-          peca,
-          img,
-          valor,
-          qt_estoque,
+        const resp = await usuarioService.insertUsuario({
+          nome,
+          username,
+          senha,
+          email,
+          telefone,
         });
         res.status(201).json({
           data: `Cadastro de id ${resp[0].id} efetuado com sucesso!!!`,
@@ -37,19 +38,20 @@ module.exports = (server) => {
       }
     })
     .put(async (req, res) => {
-      const { id, peca, img, valor, qt_estoque } = req.body;
+      const { id, nome, username, senha, email, telefone } = req.body;
       res.json(
-        await produtoService.updateProduto(id, {
-          peca,
-          img,
-          valor,
-          qt_estoque,
+        await usuarioService.updateUsuario(id, {
+          nome,
+          username,
+          senha,
+          email,
+          telefone,
         })
       );
     })
     .delete(async (req, res) => {
       try {
-        res.json(await produtoService.deleteProduto(req.body.id));
+        res.json(await usuarioService.deleteUsuario(req.body.id));
       } catch (error) {
         res.status(422).send(error.message);
       }
