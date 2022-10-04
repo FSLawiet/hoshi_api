@@ -20,22 +20,28 @@ module.exports = (server) => {
     })
     .post(async (req, res) => {
       const { nome, username, senha, email, telefone } = req.body;
-      try {
-        const resp = await usuarioService.insertUsuario({
+      await usuarioService
+        .insertUsuario({
           nome,
           username,
           senha,
           email,
           telefone,
+        })
+        .then((resp) => {
+          console.log(resp);
+          res.status(201).json({
+            data: `Cadastro de id ${resp[0].id} efetuado com sucesso!!!`,
+            id: resp[0].id,
+          });
+        })
+        .catch((error) => {
+          console.log("ERRO!: " + error.message);
+          res.status(422).send(error.message);
+        })
+        .finally(() => {
+          console.log("Obrigado por usar a API da HOSHI!");
         });
-        res.status(201).json({
-          data: `Cadastro de id ${resp[0].id} efetuado com sucesso!!!`,
-          id: resp[0].id,
-        });
-      } catch (error) {
-        console.log(error.message);
-        res.status(422).send(error.message);
-      }
     })
     .put(async (req, res) => {
       const { id, nome, username, senha, email, telefone } = req.body;
