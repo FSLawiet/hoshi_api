@@ -9,7 +9,7 @@ const sendMessage = async (phone) => {
   client.messages
     .create({
       from: "whatsapp:+14155238886",
-      body: "Hello there!",
+      body: "Compra efetuada com sucesso!",
       to: "whatsapp:" + phone,
     })
     .then((message) => console.log(message.sid));

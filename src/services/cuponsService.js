@@ -1,27 +1,27 @@
 const { Cupom } = require("../models/cupom");
 const cuponsData = require("../data/cuponsData");
 
-exports.getCupons = async () => {
-  return await cuponsData.getCupons();
+exports.getCupons = () => {
+  return cuponsData.getCupons();
 };
-exports.getCuponsById = async (id) => {
+exports.getCuponsById = (id) => {
   if (id === NaN) throw new Error("Erro na requisição de cupom.");
-  else return await cuponsData.getCuponsById(id);
+  else return cuponsData.getCuponsById(id);
 };
-exports.insertCupom = async (c) => {
+exports.insertCupom = (c) => {
   if (!c.codigo) throw new Error("Código do cupom não informado.");
   else if (!c.desconto)
     throw new Error("Porcentagem de desconto do cupom não informada.");
   else if (!c.validade)
     throw new Error("Data de validade do cupom não informada.");
   else {
-    return await cuponsData.insertCupom(c);
+    return cuponsData.insertCupom(c);
   }
 };
-exports.updateCupom = async (id, cupom) => {
-  return await cuponsData.updateCupom(id, cupom);
+exports.updateCupom = (id, cupom) => {
+  return cuponsData.updateCupom(id, cupom);
 };
-exports.deleteCupom = async (id) => {
+exports.deleteCupom = (id) => {
   if (id === NaN) throw new Error("Erro na exclusão de cupom.");
-  else return await cuponsData.deleteCupom(id);
+  else return cuponsData.deleteCupom(id);
 };

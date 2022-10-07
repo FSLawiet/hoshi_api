@@ -2,14 +2,14 @@ const { Produto } = require("../models/produto");
 const produtosData = require("../data/produtosData");
 //const sendMessage = require("../lib/twilio");
 
-exports.getProdutos = async () => {
-  return await produtosData.getProdutos();
+exports.getProdutos = () => {
+  return produtosData.getProdutos();
 };
-exports.getProdutosById = async (id) => {
+exports.getProdutosById = (id) => {
   if (id === NaN) throw new Error("Erro na requisição de produto.");
-  else return await produtosData.getProdutosById(id);
+  else return produtosData.getProdutosById(id);
 };
-exports.insertProduto = async (produto) => {
+exports.insertProduto = (produto) => {
   if (!produto.peca) throw new Error("Peça de produto não informada.");
   else if (!produto.img) throw new Error("Imagem do produto não informada");
   else if (!produto.valor) throw new Error("Preço de produto não informado.");
@@ -19,13 +19,13 @@ exports.insertProduto = async (produto) => {
     //let id = produtosData.insertProduto(produto);
     //await sendMessage(this.getProdutosById(id).phone);
     //return id;
-    return await produtosData.insertProduto(produto);
+    return produtosData.insertProduto(produto);
   }
 };
-exports.updateProduto = async (id, produto) => {
-  return await produtosData.updateProduto(id, produto);
+exports.updateProduto = (id, produto) => {
+  return produtosData.updateProduto(id, produto);
 };
-exports.deleteProduto = async (id) => {
+exports.deleteProduto = (id) => {
   if (id === NaN) throw new Error("Erro na exclusão de produto.");
-  else return await produtosData.deleteProduto(id);
+  else return produtosData.deleteProduto(id);
 };

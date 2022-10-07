@@ -1,18 +1,18 @@
 const database = require("../infra/connection");
 
-exports.getProdutos = async () =>
-  await database.query(
+exports.getProdutos = () =>
+  database.query(
     "SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos"
   );
-exports.getProdutosById = async (id) =>
-  await database.query(
+exports.getProdutosById = (id) =>
+  database.query(
     `SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos WHERE id = '${id}';`
   );
-exports.insertProduto = async (produto) =>
-  await database.query(
+exports.insertProduto = (produto) =>
+  database.query(
     `INSERT INTO produtos (peca, img, valor, quantidade_estoque) VALUES ('${produto.peca}', decode('${produto.img}', 'base64'), ${produto.valor}, ${produto.qt_estoque}) RETURNING id;`
   );
-exports.updateProduto = async (id, produto) => {
+exports.updateProduto = (id, produto) => {
   let valores = Object.values(produto);
   let valueChange = "";
   if (valores.length > 1) {
@@ -37,10 +37,10 @@ exports.updateProduto = async (id, produto) => {
     else if (produto.qt_estoque)
       valueChange += "quantidade_estoque = " + produto.qt_estoque;
   }
-  await database.query(
-    `UPDATE produtos SET ${valueChange} WHERE id_produto = ${id} RETURNING id;`
+  database.query(
+    `UPDATE produtos SET ${valueChange} WHERE id = ${id} RETURNING id;`
   );
 };
-exports.deleteProduto = async (id) => {
-  await database.query(`DELETE FROM produtos WHERE id_produto = ${id};`);
+exports.deleteProduto = (id) => {
+  database.query(`DELETE FROM produtos WHERE id = ${id};`);
 };

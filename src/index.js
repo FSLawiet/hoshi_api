@@ -5,10 +5,12 @@ const server = express();
 const port = process.env.PORT || 3000;
 
 const cupomRoute = require("./routes/cuponsRoute");
+const pedidoRoute = require("./routes/pedidoRoute");
 const produtoRoute = require("./routes/produtoRoute");
 const usuarioRoute = require("./routes/usuarioRoute");
 server.use(express.json());
 cupomRoute(server);
+pedidoRoute(server);
 produtoRoute(server);
 usuarioRoute(server);
 server.get("/", (req, res) => {
