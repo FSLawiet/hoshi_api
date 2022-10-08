@@ -15,13 +15,13 @@ exports.getUsuarios = () => {
   }
   return resp;
 };
-exports.getUsuariosById = (id) => {
+exports.getUsuariosById = async (id) => {
   if (id === NaN) throw new Error("Erro na requisição de usuario.");
   else {
-    let usuarios = usuariosData.getUsuariosById(id);
+    let usuarios = await usuariosData.getUsuariosById(id);
     let resp = [];
     for (usuario of usuarios) {
-      let enderecos = enderecosData.getEnderecosByUsuario(usuario.id);
+      let enderecos = await enderecosData.getEnderecosByUsuario(usuario.id);
       resp.push({
         ...usuario,
         enderecos,
