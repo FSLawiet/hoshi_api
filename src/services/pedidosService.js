@@ -13,12 +13,21 @@ exports.getPedidosById = (id) => {
 exports.getPedidosByUserId = (usuario) => {
   return pedidosData.getPedidosByUserId(usuario);
 };
-exports.insertPedido = (pedido) => {
-  const resp = pedidosData.insertPedido(pedido);
-  const usuario = usuariosData.getUsuariosById(
-    pedidosData.getPedidosById(resp[0].id).usuario
-  )[0];
-  const result = sendMessage(usuario.telefone);
-  if (result) return resp;
-  else throw new Error("Erro durante confirmação de compra.");
+exports.insertPedidos = async (pedido) => {
+  pedidosData
+    .insertPedidos(pedido)
+    .then((resp) => {
+      console.log("PEDIDO: " + resp);
+      const p = pedidosData.getPedidosById(resp[0].id);
+      const usuario = usuariosData.getUsuariosById(p[0].usuario)[0];
+      sendMessage(usuario.telefone)
+        .then((result) => {
+          if (result) return resp;
+          else throw new Error("Erro durante confirmação de compra.\n" + error);
+        })
+        .catch((error) => console.log("AVE CREDO" + error));
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
 };

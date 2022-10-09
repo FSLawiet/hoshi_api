@@ -35,16 +35,25 @@ exports.getPedidosByUserId = (usuario) => {
   });
   return pedidos;
 };
-exports.insertPedido = (pedido) => {
-  const resp = database.query(
-    `INSERT INTO pedidos (usuario, frete, pagamento, id_endereco, desconto, obs) VALUES (${pedido.usuario}, ${pedido.forma_envio}, ${pedido.forma_pagamento}, ${pedido.adr_id}, ${pedido.desconto}, ${pedido.obs}) RETURNING id;`
-  );
-  pedido.produtos.map((produto) => {
-    database.query(
-      `INSERT INTO pedidos_produtos (pedido, produto) VALUES (${resp.id}, ${produto.id});`
-    );
-  });
-  return resp;
+exports.insertPedidos = async (pedido) => {
+  database
+    .query(
+      `INSERT INTO pedidos (usuario, frete, pagamento, id_endereco, desconto, obs) VALUES (${pedido.usuario}, ${pedido.forma_envio}, ${pedido.forma_pagamento}, ${pedido.adr_id}, ${pedido.desconto}, '${pedido.obs}') RETURNING id;`
+    )
+    .then((resp) => {
+      pedido.produtos.map((produto) => {
+        database
+          .query(
+            `INSERT INTO pedidos_produtos (pedido, produto, tamanho) VALUES (${resp[0].id}, ${produto.id}, '${produto.tamanho}');`
+          )
+          .then((ok) => {
+            console.log(resp, ok);
+            return resp;
+          })
+          .catch((error) => console.log(error));
+      });
+    })
+    .catch((error) => console.log(error));
 };
 exports.updatePedido = (id, pedido) => {};
 exports.deletePedido = (id) => {};

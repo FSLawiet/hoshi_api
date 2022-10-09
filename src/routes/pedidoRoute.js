@@ -3,32 +3,40 @@ const pedidosService = require("../services/pedidosService");
 module.exports = (server) => {
   server
     .route("/pedidos")
-    .get(async (req, res) => {
+    .get((req, res) => {
       if (req.query.id) {
         try {
-          res.json(await pedidosService.getPedidosById(req.query.id));
+          res.json(pedidosService.getPedidosById(req.query.id));
         } catch (error) {
           res.status(404).send(error.message);
         }
       } else if (req.query.user) {
         try {
-          res.json(await pedidosService.getPedidosByUserId(req.query.user));
+          res.json(pedidosService.getPedidosByUserId(req.query.user));
         } catch (error) {
           res.status(404).send(error.message);
         }
       } else {
         try {
-          res.json(await pedidosService.getPedidos());
+          res.json(pedidosService.getPedidos());
         } catch (error) {
           res.status(404).send(error.message);
         }
       }
     })
     .post(async (req, res) => {
-      const { adr_id, forma_envio, obs, forma_pagamento, desconto, produtos } =
-        req.body;
+      const {
+        usuario,
+        adr_id,
+        forma_envio,
+        obs,
+        forma_pagamento,
+        desconto,
+        produtos,
+      } = req.body;
       try {
         const resp = await pedidosService.insertPedidos({
+          usuario,
           adr_id,
           forma_envio,
           obs,
@@ -41,6 +49,7 @@ module.exports = (server) => {
           id: resp[0].id,
         });
       } catch (error) {
+        console.log("DEU RUIM\n" + error);
         res.status(422).send(error.message);
       }
     })
