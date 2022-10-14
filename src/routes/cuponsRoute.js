@@ -3,6 +3,42 @@ const cupomService = require("../services/cuponsService");
 module.exports = (server) => {
   server
     .route("/cupons")
+/**
+  * @openapi
+  * /cupons:
+  *   get:
+  *     summary: Listagem Cupons
+  *     description: Listagem de cupons, podendo ser listagem completa, ou por identificador único.
+  *     responses:
+  *       '200':
+  *         description: Uma resposta bem-suscedida.
+  *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: O identificador único do cupom.
+ *                         example: 1
+ *                       codigo:
+ *                         type: string
+ *                         description: O código do cupom.
+ *                         example: cupom15
+ *                       desconto:
+ *                         type: float
+ *                         description: A porcentagem de desconto do cupom em valores decimais.
+ *                         example: 0.15
+ *                       validade:
+ *                         type: date
+ *                         description: Data de validade do cupom.
+ *                         example: 2022-12-31T03:00:00.000Z
+ */
     .get(async (req, res) => {
       if (req.query.id) {
         try {
@@ -18,6 +54,16 @@ module.exports = (server) => {
         }
       }
     })
+  /**
+   * @openapi
+   *   /cupons:
+   *     post:
+   *       summary: Inserção Cupom
+   *       description: Cadastro de um cupom.
+   *       responses:
+   *         200:
+   *           description: Uma resposta bem-suscedida.
+  */
     .post(async (req, res) => {
       const { codigo, desconto, validade } = req.body;
       try {
@@ -34,6 +80,15 @@ module.exports = (server) => {
         res.status(422).send(error.message);
       }
     })
+  /**
+   * @openapi
+   * /cupons:
+   *   put:
+   *     description: Alteração de dados de um cupom por identificador único.
+   *     responses:
+   *       '200':
+   *         description: Uma resposta bem-suscedida.
+  */
     .put(async (req, res) => {
       const { id, codigo, desconto, validade } = req.body;
       res.json(
@@ -44,6 +99,15 @@ module.exports = (server) => {
         })
       );
     })
+/**
+ * @openapi
+ * /cupons:
+ *   delete:
+ *     description: Exclusão de um cupom por identificador único.
+ *     responses:
+ *       200:
+ *         description: Uma resposta bem-suscedida.
+ */
     .delete(async (req, res) => {
       try {
         res.json(await cupomService.deleteCupom(req.body.id));
