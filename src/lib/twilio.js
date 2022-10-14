@@ -7,7 +7,7 @@ const client = require("twilio")(accountSid, authToken);
 
 const sendMessage = async (phone) => {
   const messageBody = {
-    from: "whatsapp:+14155238886",
+    from: "whatsapp:+556281380914",
     body: "Compra efetuada com sucesso!",
     to: "whatsapp:" + phone,
   }
