@@ -7,10 +7,11 @@ const client = require("twilio")(accountSid, authToken);
 
 const sendMessage = async (phone) => {
   const messageBody = {
-    from: "whatsapp:+556281380914",
-    body: "Compra efetuada com sucesso!",
+    from: process.env.TWILIO_NUMBER,
+    body: "Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://www.yummycupcakes.com/",
     to: "whatsapp:" + phone,
   }
+  console.log(messageBody);
   const message = await client.messages
     .create(messageBody)
     console.log(message.sid);
