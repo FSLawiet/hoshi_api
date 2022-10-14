@@ -8,7 +8,7 @@ const client = require("twilio")(accountSid, authToken);
 const sendMessage = async (phone) => {
   const messageBody = {
     from: process.env.TWILIO_NUMBER,
-    body: "Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://www.yummycupcakes.com/",
+    body: "Your Hoshi order of camisetas elegantes has shipped and should be delivered on July 10, 2019. Details: https://https://hoshi-react.netlify.app/",
     to: "whatsapp:" + phone,
   }
   console.log(messageBody);
