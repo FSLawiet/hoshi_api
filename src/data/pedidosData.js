@@ -1,59 +1,38 @@
 const database = require("../infra/connection");
 
-exports.getPedidos = () => {
-  const resp = database.query("SELECT * FROM pedidos;");
-  const pedidos = [];
-  resp.map((pedido) => {
-    const lista = database.query(
-      "SELECT * FROM pedidos_produtos WHERE pedido = " + pedido.id + ";"
+exports.getPedidos = async () => {
+  const resp = await database.one("SELECT * FROM pedidos;");
+  const lista = await database.query(
+      "SELECT * FROM pedidos_produtos WHERE pedido = " + resp.id + ";"
     );
-    pedidos.push({ ...pedido, produtos: lista });
-  });
-  return pedidos;
+    return { ...resp, produtos: lista };
 };
-exports.getPedidosById = (id) => {
-  const resp = database.query("SELECT * FROM pedidos WHERE id = " + id + ";");
-  const pedidos = [];
-  resp.map((pedido) => {
-    const lista = database.query(
-      "SELECT * FROM pedidos_produtos WHERE pedido = " + pedido.id + ";"
+exports.getPedidosById = async (id) => {
+  const resp = await database.one("SELECT * FROM pedidos WHERE id = " + id + ";");
+  const lista = await database.query(
+      "SELECT * FROM pedidos_produtos WHERE pedido = " + resp.id + ";"
     );
-    pedidos.push({ ...pedido, produtos: lista });
-  });
-  return pedidos;
+    return { ...resp, produtos: lista };
 };
-exports.getPedidosByUserId = (usuario) => {
-  const resp = database.query(
-    "SELECT * FROM pedidos WHERE usuario = " + usuario + ";"
-  );
-  const pedidos = [];
-  resp.map((pedido) => {
-    const lista = database.query(
-      "SELECT * FROM pedidos_produtos WHERE pedido = " + pedido.id + ";"
+exports.getPedidosByUserId = async (usuario) => {
+  const resp = await database.one("SELECT * FROM pedidos WHERE usuario = " + usuario + ";");
+  const lista = await database.query(
+      "SELECT * FROM pedidos_produtos WHERE pedido = " + resp.id + ";"
     );
-    pedidos.push({ ...pedido, produtos: lista });
-  });
-  return pedidos;
+    return { ...resp, produtos: lista };
 };
 exports.insertPedidos = async (pedido) => {
-  database
+  const resp = await database
     .query(
       `INSERT INTO pedidos (usuario, frete, pagamento, id_endereco, desconto, obs) VALUES (${pedido.usuario}, ${pedido.forma_envio}, ${pedido.forma_pagamento}, ${pedido.adr_id}, ${pedido.desconto}, '${pedido.obs}') RETURNING id;`
     )
-    .then((resp) => {
-      pedido.produtos.map((produto) => {
-        database
+    await pedido.produtos.map(async (produto) => {
+        await database
           .query(
-            `INSERT INTO pedidos_produtos (pedido, produto, tamanho) VALUES (${resp[0].id}, ${produto.id}, '${produto.tamanho}');`
+            `INSERT INTO pedidos_produtos (pedido, produto, tamanho) VALUES (${resp[0].id}, ${produto.produto}, '${produto.tamanho}');`
           )
-          .then((ok) => {
-            console.log(resp, ok);
-            return resp;
-          })
-          .catch((error) => console.log(error));
       });
-    })
-    .catch((error) => console.log(error));
+    return resp;
 };
 exports.updatePedido = (id, pedido) => {};
 exports.deletePedido = (id) => {};

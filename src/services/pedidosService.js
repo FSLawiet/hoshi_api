@@ -4,30 +4,23 @@ const enderecosData = require("../data/enderecosData");
 const usuariosData = require("../data/usuariosData");
 const sendMessage = require("../lib/twilio");
 
-exports.getPedidos = () => {
-  return pedidosData.getPedidos();
+exports.getPedidos = async () => {
+  return await pedidosData.getPedidos();
 };
-exports.getPedidosById = (id) => {
-  return pedidosData.getPedidosById(id);
+exports.getPedidosById = async (id) => {
+  return await pedidosData.getPedidosById(id);
 };
-exports.getPedidosByUserId = (usuario) => {
-  return pedidosData.getPedidosByUserId(usuario);
+exports.getPedidosByUserId = async (usuario) => {
+  return await pedidosData.getPedidosByUserId(usuario);
 };
 exports.insertPedidos = async (pedido) => {
-  pedidosData
-    .insertPedidos(pedido)
-    .then((resp) => {
-      console.log("PEDIDO: " + resp);
-      const p = pedidosData.getPedidosById(resp[0].id);
-      const usuario = usuariosData.getUsuariosById(p[0].usuario)[0];
-      sendMessage(usuario.telefone)
-        .then((result) => {
-          if (result) return resp;
-          else throw new Error("Erro durante confirmação de compra.\n" + error);
-        })
-        .catch((error) => console.log("AVE CREDO" + error));
-    })
-    .catch((e) => {
-      throw new Error(e);
-    });
-};
+  const resp = await pedidosData
+    .insertPedidos(pedido);
+      pedidosData.getPedidosById(resp[0].id)
+      .then(async (pedido) => {
+        const usuario = await usuariosData.getUsuariosById(pedido.usuario);
+        const messageResp = await sendMessage(usuario.telefone);
+        console.log(messageResp);
+      });
+      return resp;
+}

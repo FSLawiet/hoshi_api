@@ -6,12 +6,14 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 const sendMessage = async (phone) => {
-  client.messages
-    .create({
-      from: "whatsapp:+14155238886",
-      body: "Compra efetuada com sucesso!",
-      to: "whatsapp:" + phone,
-    })
-    .then((message) => console.log(message.sid));
+  const messageBody = {
+    from: "whatsapp:+14155238886",
+    body: "Compra efetuada com sucesso!",
+    to: "whatsapp:" + phone,
+  }
+  const message = await client.messages
+    .create(messageBody)
+    console.log(message.sid);
+    return message;
 };
 module.exports = sendMessage;
