@@ -58,6 +58,3 @@ server.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 server.listen(port, () => {
   console.log(`Servidor executando na porta ${port}`);
 });
-
-// Export the Express API
-module.exports = server;
