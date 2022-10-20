@@ -6,13 +6,14 @@ const enderecosData = require("../data/enderecosData");
 exports.getUsuarios = async () => {
   let usuarios = await usuariosData.getUsuarios();
   let resp = [];
-  usuarios.forEach(usuario => {
-    let enderecos = enderecosData.getEnderecosByUsuario(usuario.id);
+  for (usuario of usuarios) {
+    let enderecos = await enderecosData.getEnderecosByUsuario(usuario.id);
     resp.push({
       ...usuario,
       enderecos,
     });
-  });
+  }
+  console.log(resp);
   return resp;
 };
 exports.getUsuariosById = async (id) => {

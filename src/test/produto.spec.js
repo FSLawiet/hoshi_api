@@ -45,7 +45,7 @@ describe("2. Testes de Integração de Produtos", () => {
       });
 
       expect(response.status).toEqual(200);
-      expect(response.data[0].id).toBe(id);
+      expect(response.data.id).toBe(id);
     });
   });
   describe("2.3 Alteração de Produtos", () => {

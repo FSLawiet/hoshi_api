@@ -1,13 +1,32 @@
 const database = require("../infra/connection");
 
-exports.getProdutos = () =>
-  database.query(
-    "SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos"
+exports.getProdutos = async () => {
+  let resp = await database.query(
+    "SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos;"
   );
-exports.getProdutosById = (id) =>
-  database.query(
+  let produtos = [];
+  for (produto of resp) {
+    let categorias = await database.query(
+      "SELECT codigo, descricao FROM categorias, categorias_produtos WHERE categorias.id = categorias_produtos.categoria AND categorias_produtos.produto = " +
+        produto.id +
+        ";"
+    );
+    console.log(categorias);
+    produtos.push({ ...produto, categorias: categorias });
+  }
+  return produtos;
+};
+exports.getProdutosById = async (id) => {
+  const resp = await database.one(
     `SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos WHERE id = '${id}';`
   );
+  const categorias = await database.query(
+    "SELECT codigo, descricao FROM categorias, categorias_produtos WHERE categorias.id = categorias_produtos.categoria AND categorias_produtos.produto = " +
+      resp.id +
+      ";"
+  );
+  return { ...resp, categorias };
+};
 exports.insertProduto = (produto) =>
   database.query(
     `INSERT INTO produtos (peca, img, valor, quantidade_estoque) VALUES ('${produto.peca}', decode('${produto.img}', 'base64'), ${produto.valor}, ${produto.qt_estoque}) RETURNING id;`
