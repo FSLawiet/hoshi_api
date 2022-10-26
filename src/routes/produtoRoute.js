@@ -68,6 +68,11 @@ module.exports = (server) => {
      *                 $ref: '#/components/schemas/Produto'
      *       404:
      *         description: Uma resposta mal-suscedida.
+     *         content:
+     *           text/plain:
+     *             schema:
+     *               type: string
+     *               example: Descrição do erro.
      */
     /**
      * @openapi
@@ -92,6 +97,11 @@ module.exports = (server) => {
      *               $ref: '#/components/schemas/Produto'
      *       404:
      *         description: Uma resposta mal-suscedida.
+     *         content:
+     *           text/plain:
+     *             schema:
+     *               type: string
+     *               example: Descrição do erro.
      */
     .get(async (req, res) => {
       if (req.query.id) {
