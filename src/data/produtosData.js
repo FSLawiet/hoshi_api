@@ -11,7 +11,6 @@ exports.getProdutos = async () => {
         produto.id +
         ";"
     );
-    console.log(categorias);
     produtos.push({ ...produto, categorias: categorias });
   }
   return produtos;
