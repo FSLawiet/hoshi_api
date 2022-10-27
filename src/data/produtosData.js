@@ -1,5 +1,6 @@
 const database = require("../infra/connection");
 
+// Requisita todos os produtos do banco de dados, juntamente com as categorias em um array
 exports.getProdutos = async () => {
   let resp = await database.query(
     "SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos;"
@@ -15,6 +16,7 @@ exports.getProdutos = async () => {
   }
   return produtos;
 };
+// Requisita um produto do banco de dados por ID único, juntamente com as categorias em um array
 exports.getProdutosById = async (id) => {
   const resp = await database.one(
     `SELECT id, peca, encode(img, 'base64') AS img, valor, quantidade_estoque FROM produtos WHERE id = '${id}';`
