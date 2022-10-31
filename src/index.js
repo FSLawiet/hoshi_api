@@ -25,32 +25,32 @@ usuarioRoute(server);
 
 const swaggerOptions = {
   swaggerDefinition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
       title: "Hoshi API",
-      version: '0.1.0',
+      version: "0.1.0",
       description: "API para o e-commerce da Hoshi",
       license: {
-        name: 'Licensed Under MIT',
-        url: 'https://spdx.org/licenses/MIT.html',
+        name: "Licensed Under MIT",
+        url: "https://spdx.org/licenses/MIT.html",
       },
       contact: {
-        name: "Gustavo Vieira"
+        name: "Gustavo Vieira",
       },
     },
     servers: [
-      { 
+      {
         url: "http://localhost:3000/",
-        description: "Development Server"
+        description: "Development Server",
       },
-      { 
+      {
         url: "https://hoshi-api.herokuapp.com/",
-        description: "Production Server"
-      }
-    ]
+        description: "Production Server",
+      },
+    ],
   },
-  apis: ['src/routes/*.js'],
-}
+  apis: ["src/routes/*.js"],
+};
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
